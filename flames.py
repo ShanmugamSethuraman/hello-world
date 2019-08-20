@@ -1,4 +1,5 @@
 from flask import Flask,render_template,request
+import time
 
 
 ismatch = False
@@ -6,7 +7,11 @@ ismatch = False
 def getUserInput():
     name1 = input("please enter your name: ")
     name2 = input("please enter your partner name: ")
+    print("")
     print("we are going to calculate FLAMES for "+name1+" and " + name2)
+    print("")
+    print("Calculating.Please wait..............................................")
+    time.sleep(2)
     return name1, name2
 
 
@@ -57,51 +62,56 @@ def getUniqueCharacters(na):
     # print("final match : "+str(matchingletters))
     # print("final nonmatch : "+str(nonmatchingletters))
     # print("final Name 2 : "+str(name2));
-    uniquecharacterslist = []
-    uniquecharacterslist.extend(nonmatchingletters)
-    uniquecharacterslist.extend(name2)
-    # print("uniqueCharacters list: " + str(uniquecharacterslist))
-    # totalLength = int(len(nonmatchingletters)+len(name2))
+    totalLength = int(len(nonmatchingletters)+len(name2))
     # print("Final Length : "+str(totalLength))
-    return uniquecharacterslist
+    return totalLength
+
+def splitandjoin(selectedchar,iterationvalue):
+    splitstring = iterationvalue.split(selectedchar)
+    concatedStrong = splitstring[1]+splitstring[0]
+    return concatedStrong
 
 
-def doFlames(uniqueCharaters):
-    test = "shan"
-    charList = uniqueCharaters
-    flames = ['F','L','A','M','E','S']
+def doFlames(totalLength):
     flamesstring = "FLAMES"
-    print("Flmaes List: "+str(flames))
-    totalLength = len(charList)
-    print("car list length : " + str(totalLength))
-    flamesnumber = int(totalLength%6)
-    print("flamesNumber : "+str(flamesnumber))
-    print("char list 1:"+str(charList))
-    flames.pop(flamesnumber-1)
-    print("Flames list output: "+str(flames))
-    charactergot = flamesstring[3]
-    print("charactergot" + str(charactergot))
+    length1 = int(totalLength%6)
+    getcharacter1 = flamesstring[length1-1]
+    iteration1 = splitandjoin(getcharacter1, flamesstring)
+    # print("iteration1" + str(iteration1))
+    length2 = int(totalLength % 5)
+    getcharacter2 = iteration1[length2 - 1]
+    iteration2 = splitandjoin(getcharacter2,iteration1)
+    # print("iteration2" + str(iteration2))
+    length3 = int(totalLength % 4)
+    getcharacter3 = iteration2[length3-1]
+    iteration3 = splitandjoin(getcharacter3, iteration2)
+    # print("iteration3" + str(iteration3))
+    length4 = int(totalLength % 3)
+    getcharacter4 = iteration3[length4 - 1]
+    iteration4 = splitandjoin(getcharacter4, iteration3)
+    # print("iteration4" + str(iteration4))
+    length5 = int(totalLength % 2)
+    getcharacter5 = iteration4[length5 - 1]
+    iteration5 = splitandjoin(getcharacter5, iteration4)
+    # print("iteration5" + str(iteration5))
+    return iteration5
 
 
-
-
-
-    return
-
-
-def getFlamesValue(flamesnumber):
-    if flamesnumber == 1:
-        return "Friends"
-    if flamesnumber == 2:
-        return "Lovers"
-    if flamesnumber == 3:
-        return "Affection"
-    if flamesnumber == 4:
-        return "Marriage"
-    if flamesnumber == 5:
-        return "Enemies"
-    if flamesnumber == 0:
-        return "Sisters"
+def getFlamesValue(finalcharacter,na):
+    name1 = na[0]
+    name2 = na[1]
+    if finalcharacter == "F":
+        return name1 +" and "+name2+" are FRIENDS"
+    if finalcharacter == "L":
+        return name2 +" is in LOVE with "+name1
+    if finalcharacter == "A":
+        return name2 +" is ATTRACTED to "+name1
+    if finalcharacter == "M":
+        return name1 +" will get MARRIED to "+name2
+    if finalcharacter == "E":
+        return name1 +" and "+name2+" are ENIMIES"
+    if finalcharacter == "S":
+        return name1 +" and "+name2+" are SISTERS/BROTHERS"
 
 
 def validateNames(na):
@@ -109,7 +119,7 @@ def validateNames(na):
     name2 = na[1];
     length1 = len(name1)
     length2 = len(name2)
-    print("last letter:"+str(name1[length1-1]))
+    # print("last letter:"+str(name1[length1-1]))
 
 
 def main():
@@ -124,10 +134,12 @@ def main():
     names = getUserInput()
     namestolist = convertStringToList(names)
     validateNames(namestolist)
-    uniqueCharacters = getUniqueCharacters(namestolist)
-    flamesOutput = doFlames(uniqueCharacters)
-    # print("")
-    # print("FLAMES result for '"+str(names[0])+"' and '"+str(names[1])+"' is ---->  "+flamesOutput)
+    totalLength = getUniqueCharacters(namestolist)
+    finalcharacter = doFlames(totalLength)
+    flamesresult = getFlamesValue(finalcharacter,names)
+    print("")
+    print(flamesresult)
+    print("")
     print("")
     playagain = input("Enter 'Y' to play again else press any key to exit: ")
 
