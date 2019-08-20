@@ -1,4 +1,6 @@
-# import commonFunctions
+from flask import Flask,render_template,request
+
+
 ismatch = False
 
 def getUserInput():
@@ -55,16 +57,36 @@ def getUniqueCharacters(na):
     # print("final match : "+str(matchingletters))
     # print("final nonmatch : "+str(nonmatchingletters))
     # print("final Name 2 : "+str(name2));
-    totalLength = int(len(nonmatchingletters)+len(name2))
+    uniquecharacterslist = []
+    uniquecharacterslist.extend(nonmatchingletters)
+    uniquecharacterslist.extend(name2)
+    # print("uniqueCharacters list: " + str(uniquecharacterslist))
+    # totalLength = int(len(nonmatchingletters)+len(name2))
     # print("Final Length : "+str(totalLength))
-    return totalLength
+    return uniquecharacterslist
 
 
-def doFlames(totalLength):
+def doFlames(uniqueCharaters):
+    test = "shan"
+    charList = uniqueCharaters
+    flames = ['F','L','A','M','E','S']
+    flamesstring = "FLAMES"
+    print("Flmaes List: "+str(flames))
+    totalLength = len(charList)
+    print("car list length : " + str(totalLength))
     flamesnumber = int(totalLength%6)
-    # print("flamesNumber : "+str(flamesnumber))
-    flamesvalue = getFlamesValue(flamesnumber)
-    return flamesvalue
+    print("flamesNumber : "+str(flamesnumber))
+    print("char list 1:"+str(charList))
+    flames.pop(flamesnumber-1)
+    print("Flames list output: "+str(flames))
+    charactergot = flamesstring[3]
+    print("charactergot" + str(charactergot))
+
+
+
+
+
+    return
 
 
 def getFlamesValue(flamesnumber):
@@ -91,14 +113,21 @@ def validateNames(na):
 
 
 def main():
-
+    # app = Flask(__name__)
+    # @app.route('/flamesForm')
+    # def flamesForm():
+    #     return render_template("flamesForm.html")
+    #     # return "shan"
+    #     print("call inside reder")
+    # app.run()
+    # print("outside render")
     names = getUserInput()
     namestolist = convertStringToList(names)
     validateNames(namestolist)
-    totalLength = getUniqueCharacters(namestolist)
-    flamesOutput = doFlames(totalLength)
-    print("")
-    print("FLAMES result for '"+str(names[0])+"' and '"+str(names[1])+"' is ---->  "+flamesOutput)
+    uniqueCharacters = getUniqueCharacters(namestolist)
+    flamesOutput = doFlames(uniqueCharacters)
+    # print("")
+    # print("FLAMES result for '"+str(names[0])+"' and '"+str(names[1])+"' is ---->  "+flamesOutput)
     print("")
     playagain = input("Enter 'Y' to play again else press any key to exit: ")
 
