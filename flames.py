@@ -4,6 +4,7 @@ import time
 
 ismatch = False
 
+
 def getUserInput():
     name1 = input("please enter your name: ")
     name2 = input("please enter your partner name: ")
@@ -16,7 +17,8 @@ def getUserInput():
 
 
 def convertStringToList(na):
-    name1 = na[0]
+    na1 = str(na[0])
+    name1 = na1.strip()
     name2 = na[1]
     nametolist1 = list(name1)
     nametolist2 = list(name2)
@@ -123,24 +125,33 @@ def validateNames(na):
 
 
 def main():
-    # app = Flask(__name__)
-    # @app.route('/flamesForm')
-    # def flamesForm():
-    #     return render_template("flamesForm.html")
-    #     # return "shan"
-    #     print("call inside reder")
-    # app.run()
-    # print("outside render")
-    names = getUserInput()
-    namestolist = convertStringToList(names)
-    validateNames(namestolist)
-    totalLength = getUniqueCharacters(namestolist)
-    finalcharacter = doFlames(totalLength)
-    flamesresult = getFlamesValue(finalcharacter,names)
-    print("")
-    print(flamesresult)
-    print("")
-    print("")
+    app = Flask(__name__)
+    @app.route('/')
+    def index():
+        return render_template("flamesForm.html")
+    @app.route('/', methods = ['post'])
+    def getvalue():
+        fname = request.form['YourName']
+        sname = request.form['PartnerName']
+        names = fname, sname
+        namestolist = convertStringToList(names)
+        validateNames(namestolist)
+        totalLength = getUniqueCharacters(namestolist)
+        finalcharacter = doFlames(totalLength)
+        flamesresult = getFlamesValue(finalcharacter, names)
+        print(flamesresult)
+        return flamesresult
+    app.run()
+    # names = getUserInput()
+    # namestolist = convertStringToList(names)
+    # validateNames(namestolist)
+    # totalLength = getUniqueCharacters(namestolist)
+    # finalcharacter = doFlames(totalLength)
+    # flamesresult = getFlamesValue(finalcharacter,names)
+    # print("")
+    # print(flamesresult)
+    # print("")
+    # print("")
     playagain = input("Enter 'Y' to play again else press any key to exit: ")
 
     if playagain == "Y" or playagain == "y":
@@ -149,5 +160,5 @@ def main():
         print("Thanks for playing !!")
 
 
-main()
 
+main()
