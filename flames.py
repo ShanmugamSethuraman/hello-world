@@ -140,7 +140,8 @@ def main():
         finalcharacter = doFlames(totalLength)
         flamesresult = getFlamesValue(finalcharacter, names)
         print(flamesresult)
-        return flamesresult
+        return "<h1>" + flamesresult + "</h1>"
+
     app.run()
     # names = getUserInput()
     # namestolist = convertStringToList(names)
